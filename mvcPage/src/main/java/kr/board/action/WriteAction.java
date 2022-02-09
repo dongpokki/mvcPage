@@ -33,8 +33,7 @@ public class WriteAction implements Action{
 		// post 방식으로 온 데이터 반환
 		String title = multi.getParameter("title");
 		String filename = multi.getFilesystemName("filename"); 
-		String content = StringUtil.useBrNoHtml(multi.getParameter("content"));
-		//String content = multi.getParameter("content");
+		String content = multi.getParameter("content");
 		
 		// 자바빈(VO) 객체 생성
 		BoardVO board = new BoardVO();

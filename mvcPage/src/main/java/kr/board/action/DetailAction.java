@@ -53,7 +53,8 @@ public class DetailAction implements Action{
 		//HTML태그를 허용하지 않음
 		board.setTitle(StringUtil.useNoHtml(board.getTitle()));
 		//HTML태그를 허용하지 않으면서 줄바꿈처리
-		board.setContent(StringUtil.useBrNoHtml(board.getContent()));
+		//board.setContent(StringUtil.useBrNoHtml(board.getContent()));
+		board.setContent(board.getContent());
 
 		//상세 게시글 이전,다음글 정보 받아오기
 		int array_num[] = dao.getPrevNext(board_num);
