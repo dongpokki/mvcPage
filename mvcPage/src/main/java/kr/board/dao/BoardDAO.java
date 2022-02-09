@@ -455,7 +455,7 @@ public class BoardDAO {
 			
 			//댓글 삭제
 			// sql = "select count(*) from zboard_reply b join zmember m on using(mem_num) where b.board_num = ?";
-			sql = "select count(*) from zobard_reply where board_num = ?";
+			sql = "select count(*) from zboard_reply where board_num = ?";
 			
 			// PreparedStatement 객체 생성
 			pstmt = conn.prepareStatement(sql);
@@ -536,8 +536,78 @@ public class BoardDAO {
 	}
 	
 	//댓글 상세
-	
+	public BoardReplyVO getReplyBoard(int re_num)throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		BoardReplyVO reply = null;
+		String sql = null;
+		
+		try {
+			//커넥션풀로부터 커넥션 할당 받음
+			conn = DBUtil.getConnection();
+			
+			//SQL문 작성
+			sql = "select * from zboard_reply r join zmember using(mem_num) where re_num = ?";
+			
+			//PreparedStatement 객체 생성
+			pstmt = conn.prepareStatement(sql);
+			
+			//?에 데이터 바인딩
+			pstmt.setInt(1, re_num);
+			
+			//sql문 수행하여 결과집합을 rs에 담음
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				reply = new BoardReplyVO();
+				reply.setRe_num(rs.getInt("re_num"));
+				reply.setBoard_num(rs.getInt("board_num"));
+				reply.setMem_num(rs.getInt("mem_num"));
+				reply.setId(rs.getString("id"));
+			}
+			
+		} catch (Exception e) {
+			throw new Exception(e);
+		} finally {
+			//자원정리
+			DBUtil.executeClose(rs, pstmt, conn);
+		}	
+		return reply;
+	}
+		
 	//댓글 수정
+	public void updateReplyBoard(BoardReplyVO reply)throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		
+		try {
+			//커넥션풀로부터 커넥션 할당 받음
+			conn = DBUtil.getConnection();
+			
+			//SQL문 작성
+			sql = "update zboard_reply set re_content=?,re_modifydate=sysdate,re_ip=? where re_num=?";
+			
+			//PreparedStatement 객체 생성
+			pstmt = conn.prepareStatement(sql);
+			
+			//?에 데이터 바인딩
+			pstmt.setString(1, reply.getRe_content());
+			pstmt.setString(2, reply.getRe_ip());
+			pstmt.setInt(3, reply.getRe_num());
+			
+			//sql문 수행
+			pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			throw new Exception(e);
+		} finally {
+			//자원정리
+			DBUtil.executeClose(null, pstmt, conn);
+		}	
+	}
+	
 	
 	//댓글 삭제
 	
