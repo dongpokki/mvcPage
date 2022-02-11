@@ -33,7 +33,7 @@ public class ListAction implements Action{
 		//페이징 처리
 		//keyfield,keyword,currentPage,count,rowCount,pageCount,url
 		//검색 종류, 검색어, 현재 페이지넘버, 레코드 개수, 한페이지 최대 노출 레코드 개수, 페이지 넘버링 개수, 페이지넘버링 표시할 페이지 주소
-		PagingUtil page = new PagingUtil(keyfield,keyword,Integer.parseInt(pageNum),count,20,10,"list.do");
+		PagingUtil page = new PagingUtil(keyfield,keyword,Integer.parseInt(pageNum),count,10,10,"list.do");
 		
 		List<BoardVO> list = null;
 		if(count >0) { // 레코드가 있는 경우
@@ -44,6 +44,8 @@ public class ListAction implements Action{
 		request.setAttribute("count", count);
 		request.setAttribute("list", list);
 		request.setAttribute("pagingHtml", page.getPagingHtml());
+		
+		System.out.println(page.getPagingHtml());
 		
 		// jsp 경로 반환
 		return "/WEB-INF/views/board/list.jsp";
