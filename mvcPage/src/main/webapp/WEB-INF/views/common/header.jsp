@@ -24,6 +24,7 @@
 	</c:if>
 	<c:if test="${!empty user_num && user_auth ==3}"> <!--  관리자로 로그인 한 경우 -->
 		<a href="${pageContext.request.contextPath}/member/memberList.do">회원관리</a>
+		<a href="${pageContext.request.contextPath}/item/list.do">상품관리</a>
 	</c:if>
 </div>
 <hr noshade="noshade">
