@@ -185,3 +185,60 @@ form#mre_form{
 	border:none;
 	margin:5px;
 }
+
+/* 상품 */
+.item-space .horizontal-area{
+	margin: 2px;
+	padding: 3px;
+	width: 200px;
+	height: 220px;
+	float: left;
+	overflow: hidden;
+	text-align: center; 
+}
+
+.item-space .horizontal-area img{
+	width: 195px;
+	height: 175px;	
+}
+
+.item-space .horizontal-area span{
+	padding: 5px;
+	margin: 5px;	
+}
+
+.item-space .float-clear{
+	clear:both;	
+}
+
+label[for="order_quantity"]{
+	width:80px;	
+}
+
+.item-image{
+	width: 450px;
+	margin: 0 0 10px 0;
+	float: lefe;
+}
+
+.item-detail li{
+	padding: 0 0 5px 0;
+}
+
+.item-detail form{
+	border: none;	
+}
+
+#item_total_txt{
+	color:#000;
+	font-weight: bold;	
+}
+
+.quatity-width{
+	width: 40px;
+	margin-bottom: 3px;	
+}
+
+.sold-out{
+	color:red;	
+}

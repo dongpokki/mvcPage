@@ -45,8 +45,6 @@ public class ListAction implements Action{
 		request.setAttribute("list", list);
 		request.setAttribute("pagingHtml", page.getPagingHtml());
 		
-		System.out.println(page.getPagingHtml());
-		
 		// jsp 경로 반환
 		return "/WEB-INF/views/board/list.jsp";
 	}

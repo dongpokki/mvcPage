@@ -174,6 +174,129 @@ public class ItemDAO {
 	}
 	
 	// 관리자/사용자 - 상품 상세
+	public ItemVO getItem(int item_num)throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ItemVO item = null;
+		String sql = null;
+	
+		try {
+			//커넥션풀로부터 커넥션 할당
+			conn = DBUtil.getConnection();
+			
+			//sql문 작성
+			sql = "select * from zitem where item_num = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, item_num);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				item = new ItemVO();
+				item.setItem_num(rs.getInt("item_num"));
+				item.setName(rs.getString("name"));
+				item.setPrice(rs.getInt("price"));
+				item.setQuantity(rs.getInt("quantity"));
+				item.setPhoto1(rs.getString("photo1"));
+				item.setPhoto2(rs.getString("photo2"));
+				item.setDetail(rs.getString("detail"));
+				item.setStatus(rs.getInt("status"));
+			}
+			
+		} catch (Exception e) {
+			throw new Exception(e);
+		} finally {
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
+		
+		return item;
+	}
+	
 	// 관리자 - 상품 수정
+	public void updateItem(ItemVO item)throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		String sub_sql = "";
+		int cnt = 0;
+	
+		try {
+			//커넥션풀로부터 커넥션 할당
+			conn = DBUtil.getConnection();
+			
+			if(item.getPhoto1()!= null) { // 첫번째 이미지 파일이 있다면
+				sub_sql += ",photo1=?";
+			}
+			
+			if(item.getPhoto2()!= null) { // 두번째 이미지 파일이 있다면
+				sub_sql += ",photo2=?";
+			}
+			
+			sql = "update zitem set name=?,price=?,quantity=?" + sub_sql + ",detail=?,modify_date=sysdate,status=? where item_num=?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(++cnt, item.getName());
+			pstmt.setInt(++cnt, item.getPrice());
+			pstmt.setInt(++cnt, item.getQuantity());
+			
+			if(item.getPhoto1()!= null) { // 첫번째 이미지 파일이 있다면
+				pstmt.setString(++cnt, item.getPhoto1());
+			}
+			
+			if(item.getPhoto2()!= null) { // 두번째 이미지 파일이 있다면
+				pstmt.setString(++cnt, item.getPhoto2());
+			}
+			
+			pstmt.setString(++cnt, item.getDetail());
+			pstmt.setInt(++cnt, item.getStatus());
+			pstmt.setInt(++cnt, item.getItem_num());
+			
+			//sql문 실행
+			pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			throw new Exception(e);
+		} finally {
+			DBUtil.executeClose(null, pstmt, conn);
+		}
+	}
+	
 	// 관리자 - 상품 삭제
+	public void deleteItem(int item_num)throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		PreparedStatement pstmt2 = null;
+		String sql = null;
+	
+		try {
+			//커넥션풀로부터 커넥션 할당
+			conn = DBUtil.getConnection();
+			
+			//오토 커밋 해제
+			conn.setAutoCommit(false);
+			
+			//삭제하고자 하는 상품이 카트에 담겨있으면 카트에 저장된 상품 삭제
+			// sql = "delete from zcart where item_num=?"; 
+			// pstmt = conn.prepareStatement(sql);
+			// pstmt.setInt(1, item_num);
+			// pstmt.executeUpdate();
+			
+			sql = "delete from zitem where item_num = ?";
+			pstmt2 = conn.prepareStatement(sql);
+			pstmt2.setInt(1, item_num);
+			pstmt2.executeUpdate();
+			
+			conn.commit();
+		} catch (Exception e) {
+			conn.rollback();
+			throw new Exception(e);
+		} finally {
+			DBUtil.executeClose(null, pstmt2, null);
+			DBUtil.executeClose(null, pstmt, conn);
+		}
+	}
 }

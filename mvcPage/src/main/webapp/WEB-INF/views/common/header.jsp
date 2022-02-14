@@ -10,6 +10,7 @@
 	<c:if test="${!empty user_num && empty user_photo}"> <!-- 사진은 없지만, 로그인 된 경우 -->
 		<img src="${pageContext.request.contextPath}/images/face.png" width="25" height="25" class="my-photo">
 	</c:if>
+	<a href="${pageContext.request.contextPath}/item/itemlist.do" class="float-left">상품목록</a>
 	<a href="${pageContext.request.contextPath}/board/list.do" class="float-left">게시판</a>
 	<c:if test="${!empty user_num}"> <!--  로그인 된 경우 -->
 		[<span><b>${user_id}</b></span>]
