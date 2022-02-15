@@ -279,11 +279,11 @@ public class ItemDAO {
 			//오토 커밋 해제
 			conn.setAutoCommit(false);
 			
-			//삭제하고자 하는 상품이 카트에 담겨있으면 카트에 저장된 상품 삭제
-			// sql = "delete from zcart where item_num=?"; 
-			// pstmt = conn.prepareStatement(sql);
-			// pstmt.setInt(1, item_num);
-			// pstmt.executeUpdate();
+			// 삭제하고자 하는 상품이 카트에 담겨있으면 카트에 저장된 상품 삭제
+			sql = "delete from zcart where item_num=?"; 
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, item_num);
+			pstmt.executeUpdate();
 			
 			sql = "delete from zitem where item_num = ?";
 			pstmt2 = conn.prepareStatement(sql);

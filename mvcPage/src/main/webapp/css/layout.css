@@ -218,7 +218,7 @@ label[for="order_quantity"]{
 .item-image{
 	width: 450px;
 	margin: 0 0 10px 0;
-	float: lefe;
+	float: left;
 }
 
 .item-detail li{

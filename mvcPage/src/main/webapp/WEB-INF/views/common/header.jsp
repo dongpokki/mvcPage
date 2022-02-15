@@ -10,11 +10,12 @@
 	<c:if test="${!empty user_num && empty user_photo}"> <!-- 사진은 없지만, 로그인 된 경우 -->
 		<img src="${pageContext.request.contextPath}/images/face.png" width="25" height="25" class="my-photo">
 	</c:if>
-	<a href="${pageContext.request.contextPath}/item/itemlist.do" class="float-left">상품목록</a>
+	<a href="${pageContext.request.contextPath}/item/itemlist.do" class="float-left">상품목록 | </a>
 	<a href="${pageContext.request.contextPath}/board/list.do" class="float-left">게시판</a>
 	<c:if test="${!empty user_num}"> <!--  로그인 된 경우 -->
 		[<span><b>${user_id}</b></span>]
-		<a href="${pageContext.request.contextPath}/member/logout.do">로그아웃</a>
+		<a href="${pageContext.request.contextPath}/member/logout.do">로그아웃 | </a>
+		<a href="${pageContext.request.contextPath}/cart/list.do">장바구니 | </a>
 	</c:if>
 	<c:if test="${empty user_num}"> <!--  로그인 안되어 있는 경우 -->
 		<a href="${pageContext.request.contextPath}/member/registerUserForm.do">회원가입</a>
