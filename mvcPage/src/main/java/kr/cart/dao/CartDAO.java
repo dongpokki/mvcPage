@@ -52,6 +52,41 @@ public class CartDAO {
 	}
 	
 	//회원번호(mem_num)별 총 구입액
+	public int getTotalByMem_num(int mem_num)throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		int total = 0;
+		
+		try {
+			// 커넥션풀로부터 커넥션 할당
+			conn = DBUtil.getConnection();
+			
+			// sql문 작성
+			sql = "select sum(sub_total) from (select c.mem_num,c.order_quantity * i.price as sub_total from zcart c join zitem i on c.item_num = i.item_num) where mem_num=?";
+			
+			// PreparedStatement 객체 생성
+			pstmt = conn.prepareStatement(sql);
+			
+			// ?에 데이터 바인딩
+			pstmt.setInt(1, mem_num);
+			
+			// sql문 수행하여 결과행을 rs에 담음
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				total = rs.getInt(1);
+			}
+			
+		} catch (Exception e) {
+			throw new Exception(e);
+		} finally {
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
+		
+		return total;
+	}
 	
 	//장바구니 목록
 	public List<CartVO> getListCart(int mem_num)throws Exception{
@@ -148,6 +183,36 @@ public class CartDAO {
 	}
 	
 	//장바구니 수정
+	public void updateCart(CartVO cart)throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		
+		try {
+			//커넥션 풀로부터 커넥션 할당받음
+			conn = DBUtil.getConnection();
+			
+			//sql문 작성
+			sql = "update zcart set order_quantity=? where cart_num=?";
+			
+			//PreparedStatement 객체 생성
+			pstmt = conn.prepareStatement(sql);
+			
+			//?에 데이터 바인딩
+			pstmt.setInt(1, cart.getOrder_quantity());
+			pstmt.setInt(2, cart.getCart_num());
+			
+			//sql문 실행
+			pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			throw new Exception(e);
+		} finally {
+			DBUtil.executeClose(null, pstmt, conn);
+		}
+		
+	}
+	
 	
 	//장바구니 회원번호별 수정
 	public void updateCartByItem_num(CartVO cart)throws Exception{
@@ -182,4 +247,31 @@ public class CartDAO {
 	}
 	
 	//장바구니 삭제
+	public void deleteCart(int cart_num)throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		
+		try {
+			//커넥션 풀로부터 커넥션 할당
+			conn = DBUtil.getConnection();
+			
+			//sql문 작성
+			sql = "delete from zcart where cart_num=?";
+			
+			//PreparedStatement 객체 생성
+			pstmt = conn.prepareStatement(sql);
+			
+			//?에 데이터 바인딩
+			pstmt.setInt(1, cart_num);
+			
+			pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			throw new Exception(e);
+		} finally {
+			DBUtil.executeClose(null, pstmt, conn);
+		}
+	}
+	
 }

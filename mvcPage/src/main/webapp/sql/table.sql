@@ -91,3 +91,41 @@ create table zcart(
 );
 
 create sequence zcart_seq;
+
+
+/* 주문 */
+create table zorder(
+	order_num number not null,
+	item_name varchar2(600) not null,
+	order_total number(9) not null,
+	payment number(1) not null, /* 결제수단 */
+	status number(1) default 1 not null, /* 주문 상태 */
+	receive_name varchar2(30) not null, /* 받는사람 이름 */
+	receive_post varchar2(5) not null, /* 받는사람 우편번호 */
+	receive_address1 varchar2(90) not null, /* 받는사람 주소 */
+	receive_address2 varchar2(90) not null, /* 받는사람 상세주소 */
+	receive_phone varchar2(15) not null, /* 받는사람 전화번호 */
+	notice varchar2(4000), /* 요청사항 */
+	reg_date date default sysdate not null,
+	modify_date date,
+	mem_num number not null,
+	constraint zorder_pk primary key (order_num),
+	constraint zorder_fk1 foreign key (mem_num) references zmember (mem_num)
+);
+
+
+create sequence zorder_seq;
+
+create table zorder_detail(
+	detail_num number not null,
+	item_num number not null,
+	item_name varchar2(30) not null,
+	item_price number(8) not null,
+	item_total number(8) not null,
+	order_quantity number(7) not null,
+	order_num number not null,
+	constraint zdetail_pk primary key (detail_num),
+	constraint zdetail_fk1 foreign key (order_num) references zorder (order_num)
+);
+
+create sequence zdetail_seq;

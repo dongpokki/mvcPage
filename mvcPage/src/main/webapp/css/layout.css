@@ -242,3 +242,13 @@ label[for="order_quantity"]{
 .sold-out{
 	color:red;	
 }
+
+/* 카트 */
+form[id="cart_order"]{
+	border:none;	
+}
+
+/* 주문 */
+form[id="order_modify"],form[id="order_form"]{
+	width: 860px;
+}
