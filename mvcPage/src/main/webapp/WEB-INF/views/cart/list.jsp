@@ -21,6 +21,12 @@
 				return;
 			}
 			
+			if(input_quantity.val()<1){
+				alert('상품의 최소 수량은 1입니다.');
+				input_quantity.val(input_quantity.attr('value'));
+				return;
+			}
+			
 			//ajax 처리
 			$.ajax({
 				url:'modifyCart.do',
