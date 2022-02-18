@@ -12,7 +12,7 @@ import kr.cart.vo.CartVO;
 import kr.controller.Action;
 import kr.item.dao.ItemDAO;
 import kr.item.vo.ItemVO;
-import kr.order.vo.OrderDAO;
+import kr.order.dao.OrderDAO;
 import kr.order.vo.OrderDetailVO;
 import kr.order.vo.OrderVO;
 
@@ -107,6 +107,6 @@ public class OrderAction implements Action{
 		request.setAttribute("accessMsg", "주문 작성이 완료되었습니다.");
 		request.setAttribute("accessUrl", request.getContextPath()+"/main/main.do");
 		
-		return "/WEB-INF/view/common/notice.jsp";
+		return "/WEB-INF/views/common/notice.jsp";
 	}
 }
