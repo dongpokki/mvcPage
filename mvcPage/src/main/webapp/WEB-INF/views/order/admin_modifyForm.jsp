@@ -6,34 +6,34 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>주문 변경하기</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/layout.css">
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 	$(function(){
 		$('#order_modify').submit(function(){
-			if($('#receive_name')).val().trim()==''){
-				alert('구매자를 입력하세요!');
+			if($('#receive_name').val().trim()==''){
+				alert('구매자를 입력하세요');
 				$('#receive_name').val('').focus();
 				return false;
 			}
-			if($('#receive_post')).val().trim()==''){
-				alert('우편번호를 입력하세요!');
-				$('#receive_post').val('').focus();
+			if($('#zipcode').val().trim()==''){
+				alert('우편번호를 입력하세요');
+				$('#zipcode').val('').focus();
 				return false;
 			}
-			if($('#receive_address1')).val().trim()==''){
-				alert('주소를 입력하세요!');
-				$('#receive_address1').val('').focus();
+			if($('#address1').val().trim()==''){
+				alert('주소를 입력하세요');
+				$('#address1').val('').focus();
 				return false;
 			}
-			if($('#receive_address2')).val().trim()==''){
-				alert('상세주소를 입력하세요!');
-				$('#receive_address2').val('').focus();
+			if($('#address2').val().trim()==''){
+				alert('상세 주소를 입력하세요');
+				$('#address2').val('').focus();
 				return false;
 			}
-			if($('#receive_phone')).val().trim()==''){
-				alert('전화번호를 입력하세요!');
+			if($('#receive_phone').val().trim()==''){
+				alert('전화번호를 입력하세요');
 				$('#receive_phone').val('').focus();
 				return false;
 			}
