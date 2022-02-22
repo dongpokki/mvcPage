@@ -486,7 +486,7 @@ public class OrderDAO {
 			conn.setAutoCommit(false);
 			
 			//sql문 작성
-			sql = "update zorder set payment=?,status=?,receive_name=?,receive_post=?,receive_address1=?,receive_address2=?,receive_phone=?,notice=? where order_num=?";
+			sql = "update zorder set payment=?,status=?,receive_name=?,receive_post=?,receive_address1=?,receive_address2=?,receive_phone=?,notice=?,modify_date=sysdate where order_num=?";
 			
 			//PreparedStatement 객체 생성
 			pstmt = conn.prepareStatement(sql);
@@ -545,7 +545,51 @@ public class OrderDAO {
 
 	// 주문 삭제
 	public void deleteOrder(int order_num)throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		PreparedStatement pstmt2 = null;
+		String sql = null;
 		
+		try {
+			//커넥션풀로부터 커넥션을 할당
+			conn = DBUtil.getConnection();
+			//오토커밋 해제
+			conn.setAutoCommit(false);
+			
+			//sql문 작성
+			sql = "delete from zorder_detail where order_num = ?";
+			
+			//PreparedStatement 객체 생성
+			pstmt = conn.prepareStatement(sql);
+			
+			//?에 데이터 바인딩
+			pstmt.setInt(1, order_num);
+			
+			//sql문 수행
+			pstmt.executeUpdate();
+			
+			//sql문 작성
+			sql = "delete from zorder where order_num = ?";
+			
+			//PreparedStatement 객체 생성
+			pstmt2 = conn.prepareStatement(sql);
+			
+			//?에 데이터 바인딩
+			pstmt2.setInt(1, order_num);
+			
+			//sql문 수행
+			pstmt2.executeUpdate();
+						
+			//모든 sql문이 성공하면
+			conn.commit();
+		} catch (Exception e) {
+			// 하나라도 sql문이 실패하면
+			conn.rollback();
+			throw new Exception(e);
+		} finally {
+			DBUtil.executeClose(null, pstmt2, null);
+			DBUtil.executeClose(null, pstmt, conn);
+		}
 	}
 	 
 }

@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>주문 변경하기</title>
+<title>내 주문내역</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/layout.css">
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
@@ -67,56 +67,65 @@
 			<td class="align-center"><fmt:formatNumber value="${order.order_total}"/>원</td>
 		</tr>
 	</table>
-	<form action="modify.do" method="post" id="order_modify">
+	<form action="orderModify.do" method="post" id="order_modify">
 		<input type="hidden" name="order_num" value="${order.order_num}">
 		<ul>
 			<li>
 				<label for="receive_name">구매자</label>
-				<input type="text" name="receive_name" id="receive_name" value="${order.receive_name}" maxlength="10">	
+				<input type="text" name="receive_name" id="receive_name" value="${order.receive_name}" maxlength="10" <c:if test="${order.status !=1}">class="order-notModify" readonly</c:if>>	
 			</li>
 			<li>
 				<label for="zipcode">우편번호</label>
-				<input type="text" name="receive_post" id="zipcode" value="${order.receive_post}" maxlength="5">
-				<input type="button" onclick="sample2_execDaumPostcode()" value="우편번호 찾기">
+				<input type="text" name="receive_post" id="zipcode" value="${order.receive_post}" maxlength="5" <c:if test="${order.status !=1}">class="order-notModify" readonly</c:if>>
+				<c:if test="${order.status == 1}">
+					<input type="button" onclick="sample2_execDaumPostcode()" value="우편번호 찾기">
+				</c:if>
 			</li>
 			<li>
 				<label for="address1">주소</label>
-				<input type="text" name="receive_address1" id="address1" value="${order.receive_address1}" maxlength="30">	
+				<input type="text" name="receive_address1" id="address1" value="${order.receive_address1}" maxlength="30" <c:if test="${order.status !=1}">class="order-notModify" readonly</c:if>>	
 			</li>
 			<li>
 				<label for="address2">상세 주소</label>
-				<input type="text" name="receive_address2" id="address2" value="${order.receive_address2}" maxlength="30">	
+				<input type="text" name="receive_address2" id="address2" value="${order.receive_address2}" maxlength="30" <c:if test="${order.status !=1}">class="order-notModify" readonly</c:if>>	
 			</li>
 			<li>
 				<label for="receive_phone">전화번호</label>
-				<input type="text" name="receive_phone" id="receive_phone" value="${order.receive_phone}" maxlength="15">	
+				<input type="text" name="receive_phone" id="receive_phone" value="${order.receive_phone}" maxlength="15" <c:if test="${order.status !=1}">class="order-notModify" readonly</c:if>>	
 			</li>
 			<li>
 				<label>결제수단</label>
-				<input type="radio" name="payment" id="payment1" value="1" <c:if test="${order.payment == 1}">checked</c:if>>통장입금
-				<input type="radio" name="payment" id="payment2" value="2" <c:if test="${order.payment == 2}">checked</c:if>>카드결제
+				<input type="hidden" name="payment" id="payment" value="${order.payment}">
+				<c:if test="${order.status == 1}">통장입금</c:if>
+				<c:if test="${order.status == 2}">카드결제</c:if>
 			</li>
 			<li>
 				<label>배송상태</label>
-				<c:if test="${order.status != 5}">
-					<input type="radio" name="status" id="status1" value="1" <c:if test="${order.status == 1}">checked</c:if>>배송대기
-					<input type="radio" name="status" id="status2" value="2" <c:if test="${order.status == 2}">checked</c:if>>배송준비중
-					<input type="radio" name="status" id="status3" value="3" <c:if test="${order.status == 3}">checked</c:if>>배송중
-					<input type="radio" name="status" id="status4" value="4" <c:if test="${order.status == 4}">checked</c:if>>배송완료
+				<c:if test="${order.status == 1}">배송대기</c:if>
+				<c:if test="${order.status == 2}">배송준비중</c:if>
+				<c:if test="${order.status == 3}">배송중</c:if>
+				<c:if test="${order.status == 4}">배송완료</c:if>
+				<c:if test="${order.status == 5}">주문취소</c:if>
+				<c:if test="${order.status < 2}">
+					<input type="radio" name="status" value="5">주문취소
 				</c:if>
-					<input type="radio" name="status" id="status5" value="5" <c:if test="${order.status == 5}">checked</c:if>>주문취소
+				<c:if test="${order.status >= 2}">
+					<input type="hidden" name="status" value="${order.status}">
+				</c:if>
 			</li>
 			<li>
 				<label for="notice">남기실 말씀</label>
-				<textarea rows="5" cols="30" name="notice" id="notice">${order.receive_notice}</textarea>
+				<c:if test="${order.status == 1}">
+					<textarea rows="5" cols="30" name="notice" id="notice">${order.receive_notice}</textarea>
+				</c:if>
+				<c:if test="${order.status != 1}">${order.receive_notice}</c:if>
 			</li>
 		</ul>
 		<div class="align-center">
-			<c:if test="${order.status != 5}">
+			<c:if test="${order.status < 2}">
 				<input type="submit" value="수정">
 			</c:if>
-			<input type="button" value="삭제" onclick="location.href='deleteOrder.do?order_num=${order.order_num}'">
-			<input type="button" value="홈으로" onclick="location.href='${pageContext.request.contextPath}/main/main.do'">
+			<input type="button" value="주문목록" onclick="location.href='${pageContext.request.contextPath}/order/orderList.do'">
 		</div>
 	</form>
 	

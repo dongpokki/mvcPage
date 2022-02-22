@@ -66,7 +66,7 @@
 			</tr>
 			<c:forEach var="order" items="${list}">
 			<tr>
-				<td><a href="ordermodifyForm.do?order_num=${order.order_num}">${order.order_num}</a></td>
+				<td><a href="orderModifyForm.do?order_num=${order.order_num}">${order.order_num}</a></td>
 				<td>${order.item_name}</td>
 				<td><fmt:formatNumber value="${order.order_total}"/>원</td>
 				<td>${order.reg_date}</td>
